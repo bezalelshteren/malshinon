@@ -10,6 +10,8 @@ namespace malshinon
     {
         static void Main(string[] args)
         {
+            persons persons = new persons();
+
         }
     }
 }
