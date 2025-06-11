@@ -39,13 +39,10 @@ namespace secrate
                     malshinonOptions.GetPersonByName(malshinonOptions.enterReport()[0], person);
                     break;
                 case 3:
-                    malshinonOptions.checkIfPersonExist(malshinonOptions.enterReport()[0],malshinonOptions.connactionToDatabase(malshinonOptions.strcon));
+                    malshinonOptions.GetPersonBySecretCode(person);
                     break;
                 case 4:
-                    //foreach(persons p in malshinonOptions.getPersonFromSql(malshinonOptions.enterReport()[0], malshinonOptions.connactionToDatabase(malshinonOptions.strcon), person))
-                    {
-                        Console.WriteLine();
-                    }
+                    
                     break;
             }
         }

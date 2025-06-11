@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace malshinon
 {
@@ -17,20 +18,22 @@ namespace malshinon
             return allInfo;
         }
 
-        public void GetPersonByName(string name, persons persons)
+        public void GetPersonByName( string name, persons persons)
         {
             List<persons> peoples = new List<persons>();
 
             string[] allName = name.Split(' ');
             string firstName = allName[0];
             string lastName = allName[1];//xdcfvgbhnjhgvfcvgbhnjk
-            string query = "SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
+            string query = "SELECT COUNT(*) FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
 
-            bool isExist = checkIfPersonExist(name, connactionToDatabase(strcon));
+            bool isExist = checkIfPersonExist(query, new[] { "@name", name }, connactionToDatabase(strcon));
             if (isExist)
             {
                 Console.WriteLine("ooooo");
-                peoples = getPersonFromSql(query, new[] { "@name", name }, connactionToDatabase(strcon), persons);
+                query = "SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
+
+                peoples = getPersonFromSql(query, new[] { "@name", "%" + name + "%" }, connactionToDatabase(strcon), persons);
             }
             else if (isExist == false) {
                 Console.WriteLine("pppppp");
@@ -46,21 +49,42 @@ namespace malshinon
         }
 
 
-        public void GetPersonBySecretCode()
+        public void GetPersonBySecretCode(persons persons)
         {
+            Console.WriteLine("enter your secret Code");
+            string secretCode = Console.ReadLine();
+            List<persons> peoples = new List<persons>();
+            string query = "SELECT COUNT(*) FROM people WHERE secretCode LIKE @secretCode;";
 
+            bool isExist = checkIfPersonExist(query, new[] { "@secretCode", secretCode }, connactionToDatabase(strcon));
+            if (isExist)
+            {
+                Console.WriteLine("ooooo");
+                query = "SELECT * FROM people WHERE secretCode LIKE @secretCode;";
+
+                peoples = getPersonFromSql(query, new[] { "@secretCode", "%" + secretCode + "%" }, connactionToDatabase(strcon), persons);
+            }
+            else if (isExist == false)
+            {
+                Console.WriteLine("this code name isn't exist");
+            }
+            foreach (persons p in peoples)
+            {
+                Console.WriteLine(p);
+            }
         }
 
         
 
         public void InsertNewPerson(persons persons) 
         {
+            string query = "SELECT COUNT(*) FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
             string name = this.enterReport()[0];
-            if (checkIfPersonExist(name, connactionToDatabase(strcon)))
+            if (checkIfPersonExist(query, new[] { "@name",  "%" + name + "%" }, connactionToDatabase(strcon)))
                 {
                 Console.WriteLine("is olredy exist do you wontto get heim !");
                 }
-            else if(checkIfPersonExist(name,connactionToDatabase(strcon))== false)
+            else if(checkIfPersonExist(query, new[] { "@name",  "%" + name + "%" }, connactionToDatabase(strcon))== false)
             {
                 Console.WriteLine("ssss");
                 insertANewPerson(persons, connactionToDatabase(strcon));
@@ -71,13 +95,14 @@ namespace malshinon
         {
             string report = enterReport()[1];
 
+
         }
         public void UpdateReportCount() 
         {
             
         }
 
-        public string createSecretCode(string name)
+        public static string createSecretCode(string name)
         {
             string secret = "";
             foreach (char c in name)

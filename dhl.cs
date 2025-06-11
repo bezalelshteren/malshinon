@@ -38,12 +38,15 @@ namespace malshinon
         {
             try
             {
-                string query = "INSERT INTO people(firstName,lastName,secretCode,type,numReports,numMentions) VALUES(@firstName,@lastName,@secretCode,@type,@numReports,@numMentions ); ";
+
+                string query = "INSERT INTO people(firstName, lastName, secretCode, type, numReports, numMentions) VALUES(@firstName, @lastName, @secretCode, @type, @numReports, @numMentions)";
                 MySqlCommand common = commonToSql(query, sqlcon);
                 Console.WriteLine("send the common");
                 common.Parameters.AddWithValue("@firstName", person.firstName);
                 common.Parameters.AddWithValue("@lastName", person.lastName);
-                common.Parameters.AddWithValue("@secretCode", person.secretCode);
+                string fullName = $"{person.firstName} {person.lastName}";
+                string code = malshinonOptions.createSecretCode(fullName);
+                common.Parameters.AddWithValue("@secretCode", code);
                 common.Parameters.AddWithValue("@type", person.type);
                 common.Parameters.AddWithValue("@numReports", person.numReports);
                 common.Parameters.AddWithValue("@numMentions", person.numMentions);
@@ -55,18 +58,18 @@ namespace malshinon
         }
 
 
-        public bool checkIfPersonExist(string name, MySqlConnection sqlcon)
+        public bool checkIfPersonExist(string query1, string[] name, MySqlConnection sqlcon)
         {
 
             //using (MySqlConnection sqlcon = connactionToDatabase(strcon)) 
             try
             {
-                string query = "SELECT COUNT(*) FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
+                string query = query1;
 
                 //string query = "SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
                 MySqlCommand common = commonToSql(query, sqlcon);
                 Console.WriteLine("send the common");
-                common.Parameters.AddWithValue("@name", "%" + name + "%");
+                common.Parameters.AddWithValue(name[0], name[1]);
 
                 int count = Convert.ToInt32(common.ExecuteScalar());
                 Console.WriteLine("is retoren enything");
@@ -115,15 +118,15 @@ namespace malshinon
         }
 
 
-        public bool IsSecretCodeExist(string cecretCode, MySqlConnection conn)
-        {
-            string query = "SELECT COUNT(*) FROM people WHERE secretCode = @code;";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@code", cecretCode);
-            int count = Convert.ToInt32(cmd.ExecuteScalar());
-            return count > 0;
-        }
+        //public bool IsSecretCodeExist(string cecretCode, MySqlConnection conn)
+        //{
+        //    string query = "SELECT COUNT(*) FROM people WHERE secretCode = @code;";
+        //    MySqlCommand cmd = new MySqlCommand(query, conn);
+        //    cmd.Parameters.AddWithValue("@code", cecretCode);
+        //    int count = Convert.ToInt32(cmd.ExecuteScalar());
+        //    return count > 0;
+        //}
 
     }
 }
-
+//"@name", "%" + name + "%"
