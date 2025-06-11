@@ -43,5 +43,11 @@ namespace malshinon
             this.numMentions = numMentions;
 
         }
+        public override string ToString()
+        {
+            return $"{firstName} {lastName}, Code: {secretCode}, Type: {type}, Reports: {numReports}, Mentions: {numMentions}";
+        }
+
     }
+
 }

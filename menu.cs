@@ -14,7 +14,7 @@ namespace secrate
         public void yourChoice()
         {
             //report report = new report();
-            dhl dhl = new dhl();
+            //dhl dhl = new dhl();
             malshinonOptions malshinonOptions = new malshinonOptions();
             persons person = new persons()
             {
@@ -27,18 +27,25 @@ namespace secrate
             };
 
             Console.WriteLine("enter your choice");
+            Console.WriteLine("1 is to insert a person, 2 is to get a person");
             int choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
                 case 1:
-                    malshinonOptions.InsertNewPerson(dhl,person);
+                    malshinonOptions.InsertNewPerson(person);
                     break;
                 case 2:
-                    malshinonOptions.GetPersonByName( malshinonOptions.enterReport()[0], dhl, person);
+                    malshinonOptions.GetPersonByName(malshinonOptions.enterReport()[0], person);
                     break;
                 case 3:
-                    //malshinonOptions
+                    malshinonOptions.checkIfPersonExist(malshinonOptions.enterReport()[0],malshinonOptions.connactionToDatabase(malshinonOptions.strcon));
+                    break;
+                case 4:
+                    //foreach(persons p in malshinonOptions.getPersonFromSql(malshinonOptions.enterReport()[0], malshinonOptions.connactionToDatabase(malshinonOptions.strcon), person))
+                    {
+                        Console.WriteLine();
+                    }
                     break;
             }
         }
