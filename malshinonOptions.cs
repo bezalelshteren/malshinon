@@ -23,7 +23,7 @@ namespace malshinon
 
             string[] allName = name.Split(' ');
             string firstName = allName[0];
-            string lastName = allName[1];//
+            string lastName = allName[1];//xdcfvgbhnjhgvfcvgbhnjk
             string query = "SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
 
             bool isExist = checkIfPersonExist(name, connactionToDatabase(strcon));
@@ -39,7 +39,10 @@ namespace malshinon
                 this.InsertNewPerson(persons1);
                 Console.WriteLine("aaaaaa");
             }
-
+            foreach(persons p in peoples)
+            {
+                Console.WriteLine(p);
+            }
         }
 
 

@@ -92,18 +92,18 @@ namespace malshinon
                 while (reader.Read())
                 {
                     Console.WriteLine("readdd wwwoww");
-                    var typeString = reader.GetString(reader.GetOrdinal("type"));
-                    type type = (type)Enum.Parse(typeof(type), typeString, true);
-                    persons person = new persons
-                    {
-                        //id = reader.GetInt32("id"),
-                        firstName = reader.GetString(reader.GetOrdinal("firstName")),
-                        lastName = reader.GetString(reader.GetOrdinal("lastName")),
-                        secretCode = reader.GetString(reader.GetOrdinal("secretCode")),
-                        type = type,
-                        numReports = reader.GetInt32(reader.GetOrdinal("numReports")),
-                        numMentions = reader.GetInt32(reader.GetOrdinal("numMentions"))
-                    };
+                    //var typeString = reader.GetString(reader.GetOrdinal("type"));
+                    //type type = (type)Enum.Parse(typeof(type), typeString, true);
+                    persons person = new persons();
+
+                    person.id = reader.GetInt32("id");
+                    person.firstName = reader.GetString(reader.GetOrdinal("firstName"));
+                    person.lastName = reader.GetString(reader.GetOrdinal("lastName"));
+                    person.secretCode = reader.GetString(reader.GetOrdinal("secretCode"));
+                    person.type = reader.GetString(reader.GetOrdinal("type"));
+                    person.numReports = reader.GetInt32(reader.GetOrdinal("numReports"));
+                    person.numMentions = reader.GetInt32(reader.GetOrdinal("numMentions"));
+                    
                     listOfPepole.Add(person);
                     Console.WriteLine("is working");
                 }

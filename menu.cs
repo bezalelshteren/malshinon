@@ -21,7 +21,7 @@ namespace secrate
                 firstName = "firstName",
                 lastName = "lastName",
                 secretCode = "secretCode",
-                type = type.reporter,
+                type = "reporter",
                 numReports = 5,
                 numMentions = 8,
             };
