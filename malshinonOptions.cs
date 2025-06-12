@@ -106,15 +106,24 @@ namespace malshinon
            
 
         }
-        public void UpdateReportCount() 
+        public void UpdateMentionCount()
         {
-            string queryToPeople = "UPDATE people SET numReports = numReports + 1 WHERE secretCode = @secretCode;";
-            updatePerson(queryToPeople, new[] { "@numReports", "numReports" }, connactionToDatabase(strcon));
+            string[] fullName = enterReport();
+            int personId = getIdByName(fullName, connactionToDatabase(strcon));
+
+            if (personId == 0)
+            {
+                Console.WriteLine("Person not found.");
+                return;
+            }
+
+            string query = "UPDATE people SET numReports = numReports + 1 WHERE id = @id;";
+            updatePerson(query, new[] { "@id", personId.ToString() }, connactionToDatabase(strcon));
         }
 
-        
 
-        public void UpdateMentionCount()
+
+        public void UpdateReportCount()
         {
             string query = "UPDATE people SET numMentions = numMentions + 1 WHERE secretCode = @secretCode;";
             updatePerson(query, new[] { "@numMentions", "numMentions" }, connactionToDatabase(strcon));
