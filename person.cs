@@ -24,6 +24,13 @@ namespace malshinon
         public int numReports { get; set; }
         public int numMentions { get; set; }
 
+        public persons(string firstName, string lastName, string secretCode) 
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.secretCode = secretCode;
+        }
+
         public persons() { }
 
         public persons(string firstName, string lastName, string secretCode, type type, int numReports, int numMentions)

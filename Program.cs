@@ -1,4 +1,5 @@
-﻿using System;
+﻿using secrate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,9 @@ namespace malshinon
     {
         static void Main(string[] args)
         {
-            persons persons = new persons();
-
+            //persons persons = new persons();
+            menu menu = new menu();
+            menu.yourChoice();
         }
     }
 }

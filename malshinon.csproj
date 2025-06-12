@@ -97,6 +97,8 @@
   <ItemGroup>
     <Compile Include="dhl.cs" />
     <Compile Include="Iperson.cs" />
+    <Compile Include="malshinonOptions.cs" />
+    <Compile Include="menu.cs" />
     <Compile Include="person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
