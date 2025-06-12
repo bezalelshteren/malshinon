@@ -49,7 +49,6 @@ namespace secrate
                     malshinonOptions.GetPersonBySecretCode(person);
                     break;
                 case 4:
-                    report report = new report();
                     malshinonOptions.InsertIntelReport();
                     break;
                 case 5:

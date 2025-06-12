@@ -95,13 +95,14 @@ namespace malshinon
             }
 
         }
-        public void InsertIntelReport(report report )
+        public void InsertIntelReport( )
         {
-            string targetId = enterReport()[0];
+            string[] name = enterReport()[0].Split(' ');
+            int targetId = getIdByName(name, connactionToDatabase(strcon));
             string reports = enterReport()[1];
             string query = "INSERT INTO intelreports(text) VALUES(@text);";
-            report report1 = report(reports,targetId);
-            insertareport(query,report,connactionToDatabase(strcon));
+            report report1 = new report(reports,targetId,5);
+            insertareport(query,report1,connactionToDatabase(strcon));
            
 
         }

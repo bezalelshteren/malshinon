@@ -15,7 +15,7 @@ namespace malshinon
         public int targetId { get; }
 
         public DateTime Time;
-
+       // public report() { }
         public report(string text, int reporterId, int targetId)
         {
             this.text = text;
