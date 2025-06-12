@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ZstdSharp.Unsafe;
 
 namespace malshinon
 {
@@ -18,7 +20,7 @@ namespace malshinon
             return allInfo;
         }
 
-        public void GetPersonByName( string name, persons persons)
+        public void GetPersonByName( string name)
         {
             List<persons> peoples = new List<persons>();
 
@@ -33,13 +35,14 @@ namespace malshinon
                 Console.WriteLine("ooooo");
                 query = "SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
 
-                peoples = getPersonFromSql(query, new[] { "@name", "%" + name + "%" }, connactionToDatabase(strcon), persons);
+                peoples = getPersonFromSql(query, new[] { "@name", "%" + name + "%" }, connactionToDatabase(strcon));
             }
             else if (isExist == false) {
                 Console.WriteLine("pppppp");
-
-                persons persons1 = new persons(firstName, lastName, createSecretCode(name));
-                this.InsertNewPerson(persons1);
+                Console.WriteLine("to insert enter your type");
+                string type = Console.ReadLine();
+                persons persons1 = new persons(firstName, lastName, createSecretCode(name), type);
+                this.InsertNewPerson(persons1,name);
                 Console.WriteLine("aaaaaa");
             }
             foreach(persons p in peoples)
@@ -62,7 +65,7 @@ namespace malshinon
                 Console.WriteLine("ooooo");
                 query = "SELECT * FROM people WHERE secretCode LIKE @secretCode;";
 
-                peoples = getPersonFromSql(query, new[] { "@secretCode", "%" + secretCode + "%" }, connactionToDatabase(strcon), persons);
+                peoples = getPersonFromSql(query, new[] { "@secretCode", "%" + secretCode + "%" }, connactionToDatabase(strcon));
             }
             else if (isExist == false)
             {
@@ -76,10 +79,10 @@ namespace malshinon
 
         
 
-        public void InsertNewPerson(persons persons) 
+        public void InsertNewPerson(persons persons,string name) 
         {
             string query = "SELECT COUNT(*) FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
-            string name = this.enterReport()[0];
+            //string name = this.enterReport()[0];
             if (checkIfPersonExist(query, new[] { "@name",  "%" + name + "%" }, connactionToDatabase(strcon)))
                 {
                 Console.WriteLine("is olredy exist do you wontto get heim !");
@@ -87,19 +90,39 @@ namespace malshinon
             else if(checkIfPersonExist(query, new[] { "@name",  "%" + name + "%" }, connactionToDatabase(strcon))== false)
             {
                 Console.WriteLine("ssss");
-                insertANewPerson(persons, connactionToDatabase(strcon));
+                query = "INSERT INTO people(firstName, lastName, secretCode, type, numReports, numMentions) VALUES(@firstName, @lastName, @secretCode, @type, @numReports, @numMentions);";
+                insertANewPerson(query,persons, connactionToDatabase(strcon));
             }
 
         }
-        public void InsertIntelReport()
+        public void InsertIntelReport(report report )
         {
-            string report = enterReport()[1];
-
+            string targetId = enterReport()[0];
+            string reports = enterReport()[1];
+            string query = "INSERT INTO intelreports(text) VALUES(@text);";
+            report report1 = report(reports,targetId);
+            insertareport(query,report,connactionToDatabase(strcon));
+           
 
         }
         public void UpdateReportCount() 
         {
-            
+            string queryToPeople = "UPDATE people SET numReports = numReports + 1 WHERE secretCode = @secretCode;";
+            updatePerson(queryToPeople, new[] { "@numReports", "numReports" }, connactionToDatabase(strcon));
+        }
+
+        
+
+        public void UpdateMentionCount()
+        {
+            string query = "UPDATE people SET numMentions = numMentions + 1 WHERE secretCode = @secretCode;";
+            updatePerson(query, new[] { "@numMentions", "numMentions" }, connactionToDatabase(strcon));
+        }
+
+        public void updateForiginKey()
+        {
+            string query = "SELECT id FROM people WHERE CONCAT(firstName, ' ', lastName) = @name;";
+            updatePerson(query, new[] { "@", "numMentions" }, connactionToDatabase(strcon));
         }
 
         public static string createSecretCode(string name)
@@ -113,15 +136,14 @@ namespace malshinon
             return secret;
         }
 
-        public void UpdateMentionCount()
-        {
-
-        }
         public void GetReporterStats()
         {
 
         }
-        public void GetTargetStats() { }
+        public void GetTargetStats()
+        {
+
+        }
         public void CreateAlert() { }
         public void GetAlerts() { }
     }

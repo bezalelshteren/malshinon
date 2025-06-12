@@ -34,12 +34,10 @@ namespace malshinon
         }
 
 
-        public void insertANewPerson(persons person ,MySqlConnection sqlcon)
+        public void insertANewPerson(string query,persons person ,MySqlConnection sqlcon)
         {
             try
             {
-
-                string query = "INSERT INTO people(firstName, lastName, secretCode, type, numReports, numMentions) VALUES(@firstName, @lastName, @secretCode, @type, @numReports, @numMentions)";
                 MySqlCommand common = commonToSql(query, sqlcon);
                 Console.WriteLine("send the common");
                 common.Parameters.AddWithValue("@firstName", person.firstName);
@@ -58,15 +56,12 @@ namespace malshinon
         }
 
 
-        public bool checkIfPersonExist(string query1, string[] name, MySqlConnection sqlcon)
+        public bool checkIfPersonExist(string query, string[] name, MySqlConnection sqlcon)
         {
-
+           // this.connactionToDatabase(strcon)
             //using (MySqlConnection sqlcon = connactionToDatabase(strcon)) 
             try
             {
-                string query = query1;
-
-                //string query = "SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE @name;";
                 MySqlCommand common = commonToSql(query, sqlcon);
                 Console.WriteLine("send the common");
                 common.Parameters.AddWithValue(name[0], name[1]);
@@ -81,12 +76,12 @@ namespace malshinon
         }
 
 
-        public List<persons> getPersonFromSql(string query1,string[] name, MySqlConnection sqlcon,persons persons )
+        public List<persons> getPersonFromSql(string query,string[] name, MySqlConnection sqlcon )
         {
             List<persons> listOfPepole = new List<persons>();
             try
             {
-                string query = query1;
+                
                 MySqlCommand common = commonToSql(query, sqlcon);
                 common.Parameters.AddWithValue(name[0], name[1]);
                 var reader = common.ExecuteReader();
@@ -126,7 +121,33 @@ namespace malshinon
         //    int count = Convert.ToInt32(cmd.ExecuteScalar());
         //    return count > 0;
         //}
+        public void updatePerson(string query, string[]theChaing,MySqlConnection sqlcon)
+        {
+            try
+            {
+                MySqlCommand common = commonToSql(query, sqlcon);
+                common.Parameters.AddWithValue(theChaing[0], theChaing[1]);
+                common.ExecuteNonQuery();
+               
+            }catch(Exception ex) { Console.WriteLine(ex.Message,ex.GetType());
+            }
+            
+        }
+        public void insertareport(string query, report report, MySqlConnection sqlcon)
+        {
+            try
+            {
+                MySqlCommand common = commonToSql(query, sqlcon);
+                common.Parameters.AddWithValue("@text", report.text);
+                common.Parameters.AddWithValue("@reporterId", report.reporterId);
+                common.Parameters.AddWithValue("@targetId", report.targetId);
+                common.ExecuteNonQuery();
+            }catch(Exception ex) { Console.WriteLine(ex.Message,ex.GetType()); }
+        }
+        public int getIdByName()
+        {
 
+        }
     }
 }
 //"@name", "%" + name + "%"
