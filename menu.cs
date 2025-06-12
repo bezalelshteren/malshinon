@@ -18,20 +18,11 @@ namespace secrate
             string[] fullName = name.Split(' ');
 
             malshinonOptions malshinonOptions = new malshinonOptions();
-            //string[] fullName =  malshinonOptions.enterReport();
-            //string name = fullName.ToString();
             persons pers = new persons(fullName[0], fullName[1],malshinonOptions.createSecretCode(name),"reporter");
-
-            //report report = new report();
-            //dhl dhl = new dhl();
-            //string[] name2 = malshinonOptions.enterReport();
-            //string newName = name2.ToString();
+            
             malshinonOptions.InsertNewPerson(pers,name);
             persons person = new persons();
-            
-
-            Console.WriteLine("enter your choice");
-            Console.WriteLine("1 is to insert a person, 2 is to get a person 3 to get person by secretCode 4 to insert a report and aperson ");
+            all.PrintMenu();
             int choice = int.Parse(Console.ReadLine());
 
             switch (choice)
@@ -53,6 +44,9 @@ namespace secrate
                     break;
                 case 5:
                     malshinonOptions.GetAlerts();
+                    break;
+                case 6:
+                    malshinonOptions.UpdateMentionCount();
                     break;
             }
         }

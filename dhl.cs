@@ -14,10 +14,7 @@ namespace malshinon
     {
         public string strcon = "server=localhost;username=root;password=;database=design;";
 
-        //public dhl()
-        //{
-
-        //}
+     
         public MySqlConnection connactionToDatabase(string strcon)
         {
             MySqlConnection sqlcon = new MySqlConnection(strcon);
@@ -58,8 +55,6 @@ namespace malshinon
 
         public bool checkIfPersonExist(string query, string[] name, MySqlConnection sqlcon)
         {
-           // this.connactionToDatabase(strcon)
-            //using (MySqlConnection sqlcon = connactionToDatabase(strcon)) 
             try
             {
                 MySqlCommand common = commonToSql(query, sqlcon);
@@ -90,8 +85,6 @@ namespace malshinon
                 while (reader.Read())
                 {
                     Console.WriteLine("readdd wwwoww");
-                    //var typeString = reader.GetString(reader.GetOrdinal("type"));
-                    //type type = (type)Enum.Parse(typeof(type), typeString, true);
                     persons person = new persons();
 
                     person.id = reader.GetInt32("id");
@@ -121,6 +114,7 @@ namespace malshinon
         //    int count = Convert.ToInt32(cmd.ExecuteScalar());
         //    return count > 0;
         //}
+
         public void updatePerson(string query, string[]theChaing,MySqlConnection sqlcon)
         {
             try
@@ -128,6 +122,7 @@ namespace malshinon
                 MySqlCommand common = commonToSql(query, sqlcon);
                 common.Parameters.AddWithValue(theChaing[0], theChaing[1]);
                 common.ExecuteNonQuery();
+                Console.WriteLine("update the num of 8");
                
             }catch(Exception ex) { Console.WriteLine(ex.Message,ex.GetType());
             }
@@ -144,9 +139,25 @@ namespace malshinon
                 common.ExecuteNonQuery();
             }catch(Exception ex) { Console.WriteLine(ex.Message,ex.GetType()); }
         }
-        public int getIdByName()
+        public int getIdByName(string[] name, MySqlConnection sqlcon)
         {
-
+            int theId = 0 ;
+            string firstName = name[0];
+            string lastName = name[1];
+            string query = "SELECT id FROM people WHERE firstName = @firstName AND lastName = @lastName;";
+            MySqlCommand common = commonToSql(query, sqlcon);
+            Console.WriteLine("send query");
+            common.Parameters.AddWithValue("@firstName", firstName);
+            common.Parameters.AddWithValue("@lastName", lastName);
+            var reader =  common.ExecuteReader();
+            Console.WriteLine("is read perfect");
+            if (reader.Read())
+            {
+                theId = reader.GetInt32(reader.GetOrdinal("id"));
+            }
+            Console.WriteLine("is get ");
+            
+            return theId;
         }
     }
 }
