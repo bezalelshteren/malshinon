@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace malshinon
 {
-    public enum type
-    {
-        reporter,
-        target,
-        both,
-        potentialAgent
-    }
+    
 
     public class persons
     {
@@ -20,20 +14,21 @@ namespace malshinon
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string secretCode { get; set; }
-        public type type { get; set; }
+        public string type { get; set; }
         public int numReports { get; set; }
         public int numMentions { get; set; }
 
-        public persons(string firstName, string lastName, string secretCode) 
+        public persons(string firstName, string lastName, string secretCode,string type) 
         {
             this.firstName = firstName;
             this.lastName = lastName;
             this.secretCode = secretCode;
+            this.type = type;
         }
 
         public persons() { }
 
-        public persons(string firstName, string lastName, string secretCode, type type, int numReports, int numMentions)
+        public persons(string firstName, string lastName, string secretCode, string type, int numReports, int numMentions)
         {
             this.firstName = firstName;
             this.lastName = lastName;
@@ -43,5 +38,11 @@ namespace malshinon
             this.numMentions = numMentions;
 
         }
+        public override string ToString()
+        {
+            return $"{firstName} {lastName}, Code: {secretCode}, Type: {type}, Reports: {numReports}, Mentions: {numMentions}";
+        }
+
     }
+
 }
